@@ -21,7 +21,6 @@ router.post("/post", async (req, res) => {
 });
 
 router.put("/update/:id", async (req, res) => {
-
   const data = await aboutInfo.findByIdAndUpdate(
     { _id: req.params.id },
     {
@@ -36,7 +35,7 @@ router.put("/update/:id", async (req, res) => {
     },
     (err) => {
       if (err) {
-        res.status(500).json()
+        res.status(500).json(err);
       }
     }
   );
