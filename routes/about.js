@@ -21,24 +21,26 @@ router.post("/post", async (req, res) => {
 });
 
 router.put("/update/:id", async (req, res) => {
-  try {
-    await aboutInfo.findByIdAndUpdate(
-      { _id: req.params.id },
-      {
-        $set: {
-          title: req.body.title,
-          headerDetails: req.body.headerDetails,
-          buttonText: req.body.buttonText,
-        },
+
+  const data = await aboutInfo.findByIdAndUpdate(
+    { _id: req.params.id },
+    {
+      $set: {
+        title: req.body.title,
+        headerDetails: req.body.headerDetails,
+        buttonText: req.body.buttonText,
       },
-      {
-        useFindAndModify: false,
+    },
+    {
+      useFindAndModify: false,
+    },
+    (err) => {
+      if (err) {
+        res.status(500).json()
       }
-    );
-    res.status(200).json("Title Updated Successfully");
-  } catch (err) {
-    res.status(404).json(err);
-  }
+    }
+  );
+  res.status(200).send(data);
 });
 
 module.exports = router;
