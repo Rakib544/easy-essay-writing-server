@@ -1,6 +1,15 @@
 const router = require("express").Router();
 const OrderCard = require("../models/BannerInfo");
 
+// router.get("/", async (req, res) => {
+//   try {
+//     const post = await OrderCard.find({});
+//     res.status(200).json(post);
+//   } catch (err) {
+//     res.status(404).json(err);
+//   }
+// });
+
 router.post("/post", async (req, res) => {
   try {
     const newPost = new OrderCard(req.body);
