@@ -1,9 +1,9 @@
 const router = require("express").Router();
-const BannerInfo = require("../models/BannerInfo");
+const PriceCard = require("../models/PriceCardInfo");
 
 router.get("/", async (req, res) => {
   try {
-    const post = await BannerInfo.find({});
+    const post = await PriceCard.find({});
     res.status(200).json(post);
   } catch (err) {
     res.status(404).json(err);
@@ -12,7 +12,7 @@ router.get("/", async (req, res) => {
 
 router.post("/post", async (req, res) => {
   try {
-    const newPost = new BannerInfo(req.body);
+    const newPost = new PriceCard(req.body);
     const data = await newPost.save();
     res.status(200).json(data);
   } catch (err) {
@@ -20,13 +20,13 @@ router.post("/post", async (req, res) => {
   }
 });
 
-router.put("/update/title/:id", async (req, res) => {
+router.put("/update/deliveryDay/:id", async (req, res) => {
   try {
-    await BannerInfo.findByIdAndUpdate(
+    await PriceCard.findByIdAndUpdate(
       { _id: req.params.id },
       {
         $set: {
-          title: req.body.title,
+          deliveryDay: req.body.deliveryDay,
         },
       },
       {
@@ -39,13 +39,32 @@ router.put("/update/title/:id", async (req, res) => {
   }
 });
 
-router.put("/update/headerDetails/:id", async (req, res) => {
+router.put("/update/perPage/:id", async (req, res) => {
   try {
-    await BannerInfo.findByIdAndUpdate(
+    await PriceCard.findByIdAndUpdate(
       { _id: req.params.id },
       {
         $set: {
-          headerDetails: req.body.headerDetails,
+          perPage: req.body.perPage,
+        },
+      },
+      {
+        useFindAndModify: false,
+      }
+    );
+    res.status(200).json("Title Updated Successfully");
+  } catch (err) {
+    res.status(404).json(err);
+  }
+});
+
+router.put("/update/wordPerPage/:id", async (req, res) => {
+  try {
+    await PriceCard.findByIdAndUpdate(
+      { _id: req.params.id },
+      {
+        $set: {
+          wordPerPage: req.body.wordPerPage,
         },
       },
       {

@@ -1,9 +1,9 @@
 const router = require("express").Router();
-const BannerInfo = require("../models/BannerInfo");
+const OurProcessInfo = require("../models/OurPrecossInfo");
 
 router.get("/", async (req, res) => {
   try {
-    const post = await BannerInfo.find({});
+    const post = await OurProcessInfo.find({});
     res.status(200).json(post);
   } catch (err) {
     res.status(404).json(err);
@@ -12,7 +12,7 @@ router.get("/", async (req, res) => {
 
 router.post("/post", async (req, res) => {
   try {
-    const newPost = new BannerInfo(req.body);
+    const newPost = new OurProcessInfo(req.body);
     const data = await newPost.save();
     res.status(200).json(data);
   } catch (err) {
@@ -22,7 +22,7 @@ router.post("/post", async (req, res) => {
 
 router.put("/update/title/:id", async (req, res) => {
   try {
-    await BannerInfo.findByIdAndUpdate(
+    await BannerInfo.OurProcessInfo(
       { _id: req.params.id },
       {
         $set: {
@@ -41,11 +41,11 @@ router.put("/update/title/:id", async (req, res) => {
 
 router.put("/update/headerDetails/:id", async (req, res) => {
   try {
-    await BannerInfo.findByIdAndUpdate(
+    await BannerInfo.OurProcessInfo(
       { _id: req.params.id },
       {
         $set: {
-          headerDetails: req.body.headerDetails,
+          content: req.body.headerDetails,
         },
       },
       {

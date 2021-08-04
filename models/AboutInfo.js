@@ -18,4 +18,4 @@ const AboutInfoSchema = new mongoose.Schema(
   { timeStamps: true }
 );
 
-module.exports = mongoose.model("AboutInfo", AboutInfoSchema);
+module.exports = mongoose.model("aboutInfo", AboutInfoSchema);

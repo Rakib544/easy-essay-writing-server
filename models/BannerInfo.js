@@ -14,4 +14,4 @@ const BannerInfoSchema = new mongoose.Schema(
   { timeStamps: true }
 );
 
-module.exports = mongoose.model("bannerInfo", BannerInfoSchema);
+module.exports = mongoose.model("BannerInfo", BannerInfoSchema);
