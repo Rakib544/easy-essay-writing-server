@@ -18,6 +18,7 @@ const orderCardRoute = require("./routes/orderCard");
 const priceCardRoute = require("./routes/priceCard");
 const processRoute = require("./routes/process");
 const processCardRoute = require("./routes/processCard");
+const admin = require("./routes/admin");
 
 //Connecting mongoose
 mongoose
@@ -37,6 +38,7 @@ app.use("/priceCard", priceCardRoute);
 app.use("/process", processRoute);
 app.use("/processCard", processCardRoute);
 app.use("/footerIcons", footerIconRoute);
+app.use("/admin", admin);
 
 app.get("/", (req, res) => {
   res.send(" Bismillah Hello World!!!");
