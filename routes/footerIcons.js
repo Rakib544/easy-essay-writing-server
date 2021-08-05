@@ -25,6 +25,7 @@ router.put("/update/:id", async (req, res) => {
     { _id: req.params.id },
     {
       $set: {
+        title: req.body.title,
         link: req.body.link,
       },
     },
