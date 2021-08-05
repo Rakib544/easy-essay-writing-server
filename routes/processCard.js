@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const ProcessCardInfo = require("../models/BannerInfo");
+const ProcessCardInfo = require("../models/ProcessCardInfo");
 
 router.get("/", async (req, res) => {
   try {

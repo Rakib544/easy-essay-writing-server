@@ -38,6 +38,7 @@ router.put("/update/:id", async (req, res) => {
       }
     }
   );
+  console.log(data)
   res.status(200).send(data);
 });
 
