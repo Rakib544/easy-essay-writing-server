@@ -2,10 +2,6 @@ const mongoose = require("mongoose");
 
 const OrderCardSchema = new mongoose.Schema(
   {
-    orderId: {
-      type: String,
-      required: true,
-    },
     orderDate: {
       type: Date,
       default: Date.now,

@@ -6,6 +6,7 @@ const FaqQuestionSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    id: String,
     answer: {
       type: String,
       required: true,
