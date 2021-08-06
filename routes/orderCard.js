@@ -19,6 +19,15 @@ router.get("/completed", async (req, res) => {
   }
 });
 
+router.post("/userOrder", async (req, res) => {
+  try {
+    const userOrder = await OrderCard.find({ customerEmail: req.body.email });
+    res.status(200).json(userOrder);
+  } catch (err) {
+    res.status(404).json(err);
+  }
+});
+
 router.post("/post", async (req, res) => {
   try {
     const newPost = new OrderCard(req.body);
