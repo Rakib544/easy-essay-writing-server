@@ -100,6 +100,8 @@ function getPaginatedResults(model, orderStatus) {
     }
 
     try {
+      const total = await model.find({ orderStatus: orderStatus });
+      results.totalData = total.length;
       results.result = await model
         .find({ orderStatus: orderStatus })
         .limit(limit)
