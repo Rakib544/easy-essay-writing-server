@@ -78,7 +78,7 @@ router.put("/headerDetails/:id", async (req, res) => {
 function getPaginatedResults(model, orderStatus) {
   return async (req, res, next) => {
     const page = parseInt(req.body.page);
-    const limit = parseInt(req.body.limit);
+    const limit = 5;
 
     const startIndex = (page - 1) * limit;
     const endIndex = page * limit;
