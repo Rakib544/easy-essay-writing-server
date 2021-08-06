@@ -1,23 +1,21 @@
 const router = require("express").Router();
 const OrderCard = require("../models/OrderCard");
 
-router.get("/pending", async (req, res) => {
-  try {
-    const post = await OrderCard.find({ orderStatus: "Work In Progress" });
-    res.status(200).json(post);
-  } catch (err) {
-    res.status(404).json(err);
+router.post(
+  "/pending",
+  getPaginatedResults(OrderCard, "Work In Progress"),
+  async (req, res) => {
+    res.status(200).json(res.paginatedResults);
   }
-});
+);
 
-router.get("/completed", async (req, res) => {
-  try {
-    const post = await OrderCard.find({ orderStatus: "Completed" });
-    res.status(200).json(post);
-  } catch (err) {
-    res.status(404).json(err);
+router.post(
+  "/completed",
+  getPaginatedResults(OrderCard, "Completed"),
+  async (req, res) => {
+    res.status(200).json(res.paginatedResults);
   }
-});
+);
 
 router.post("/userOrder", async (req, res) => {
   try {
@@ -75,5 +73,44 @@ router.put("/headerDetails/:id", async (req, res) => {
     res.status(404).json(err);
   }
 });
+
+//middleware
+function getPaginatedResults(model, orderStatus) {
+  return async (req, res, next) => {
+    const page = parseInt(req.body.page);
+    const limit = parseInt(req.body.limit);
+
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+
+    const results = {};
+
+    if (endIndex < (await model.countDocuments().exec())) {
+      results.next = {
+        page: page + 1,
+        limit: limit,
+      };
+    }
+
+    if (startIndex > 0) {
+      results.previous = {
+        page: page - 1,
+        limit: limit,
+      };
+    }
+
+    try {
+      results.result = await model
+        .find({ orderStatus: orderStatus })
+        .limit(limit)
+        .skip(startIndex)
+        .exec();
+      res.paginatedResults = results;
+      next();
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  };
+}
 
 module.exports = router;
