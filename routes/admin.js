@@ -4,25 +4,57 @@ const User = require("../models/User");
 
 router.post("/", async (req, res) => {
   try {
-    const userData = req.body;
     const email = req.body.email;
     const name = req.body.name;
-    const user = await Admin.find({ email: email });
-    if (user.length === 0) {
+    const photoURL = req.body.photoURL;
+
+    const isAdminList = await Admin.find({ email: email });
+
+    if (isAdminList.length === 0) {
       const isUser = await User.find({ email: email });
       if (isUser.length === 0) {
-        const newUser = new User({ email, name, userType: "user" });
+        console.log("Test");
+        const newUser = new User({ name, email, userType: "user" });
         const user = await newUser.save();
-        const object = { ...user };
-        object.photoURL = userData.photoURL;
-        res.json(object);
+
+        const userObj = {};
+        userObj.username = user.name;
+        userObj.userEmail = user.email;
+        userObj.userType = user.userType;
+        userObj._id = user._id;
+        userObj.photoURL = photoURL;
+        res.send(userObj);
       } else {
-        const object = { ...isUser };
-        object.photoURL = userData.photoURL;
-        res.json(object);
+        const userObj = {};
+        userObj.username = isUser[0].name;
+        userObj.userEmail = isUser[0].email;
+        userObj.userType = isUser[0].userType;
+        userObj._id = isUser[0]._id;
+        userObj.photoURL = photoURL;
+        res.send(userObj);
       }
     } else {
-      res.send("Follow");
+      const isUser = await User.find({ email: email });
+      console.log(isUser);
+      if (isUser.length === 0) {
+        const newUser = new User({ name, email, userType: "admin" });
+        const user = await newUser.save();
+        const userObj = {};
+        userObj.username = user.name;
+        userObj.userEmail = user.email;
+        userObj.userType = user.userType;
+        userObj._id = user._id;
+        userObj.photoURL = photoURL;
+        res.send(userObj);
+      } else {
+        const userObj = {};
+        userObj.username = isUser[0].name;
+        userObj.userEmail = isUser[0].email;
+        userObj.userType = isUser[0].userType;
+        userObj._id = isUser[0]._id;
+        userObj.photoURL = photoURL;
+        res.send(userObj);
+      }
     }
   } catch (err) {
     res.status(404).json(err);
@@ -39,5 +71,15 @@ router.post("/addAdmin", async (req, res) => {
     res.status(404).json(err);
   }
 });
+
+// const formateUser = (userInfo, photoURL) => {
+//   const name = userInfo[0].name;
+//   const email = userInfo[0].email;
+//   const userType = userInfo[0].userType;
+//   const _id = userInfo[0]._id;
+
+//   const userInfoObj = { name, email, userType, _id, photoURL };
+//   return userInfoObj;
+// };
 
 module.exports = router;
