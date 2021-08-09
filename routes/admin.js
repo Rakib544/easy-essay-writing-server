@@ -13,7 +13,6 @@ router.post("/", async (req, res) => {
     if (isAdminList.length === 0) {
       const isUser = await User.find({ email: email });
       if (isUser.length === 0) {
-        console.log("Test");
         const newUser = new User({ name, email, userType: "user" });
         const user = await newUser.save();
 
@@ -35,7 +34,6 @@ router.post("/", async (req, res) => {
       }
     } else {
       const isUser = await User.find({ email: email });
-      console.log(isUser);
       if (isUser.length === 0) {
         const newUser = new User({ name, email, userType: "admin" });
         const user = await newUser.save();
