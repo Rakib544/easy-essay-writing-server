@@ -9,15 +9,20 @@ router.post("/", async (req, res) => {
     const name = req.body.name;
     const user = await Admin.find({ email: email });
     if (user.length === 0) {
-      const newUser = new User({ email, name, userType: "user" });
-      await newUser.save();
-      userData.userType = "user";
-      res.json(userData);
+      const isUser = await User.find({ email: email });
+      if (isUser.length === 0) {
+        const newUser = new User({ email, name, userType: "user" });
+        const user = await newUser.save();
+        const object = { ...user };
+        object.photoURL = userData.photoURL;
+        res.json(object);
+      } else {
+        const object = { ...isUser };
+        object.photoURL = userData.photoURL;
+        res.json(object);
+      }
     } else {
-      const newUser = new User({ email, name, userType: "admin" });
-      await newUser.save();
-      userData.userType = "admin";
-      res.json(userData);
+      res.send("Follow");
     }
   } catch (err) {
     res.status(404).json(err);
