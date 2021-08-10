@@ -37,7 +37,7 @@ router.post("/", async (req, res) => {
             referredBy: referrerEmail,
           });
           await affiliateUser.save();
-          res.send({ userObj, affiliateUser });
+          res.send(userObj);
         } else {
           const newUser = new User({
             name,
