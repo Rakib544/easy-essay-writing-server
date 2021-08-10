@@ -13,6 +13,14 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  hasDiscountOffer: {
+    type: Boolean,
+    required: true,
+  },
+  isAffiliateUser: {
+    type: Boolean,
+    required: true,
+  },
 });
 
 module.exports = mongoose.model("User", UserSchema);

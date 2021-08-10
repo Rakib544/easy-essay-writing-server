@@ -59,6 +59,23 @@ router.post("/", async (req, res) => {
   }
 });
 
+router.get("/checkURL/:id", async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    const user = await User.find({ _id: id });
+
+    if (user.length === 0) {
+      res.json("Wrong Referrer URL");
+    } else {
+      const email = user[0].email;
+      res.json({ referrerEmail: email });
+    }
+  } catch (err) {
+    res.json("Wrong referrer URL ");
+  }
+});
+
 router.post("/addAdmin", async (req, res) => {
   try {
     const newAdmin = new Admin(req.body);
@@ -69,15 +86,5 @@ router.post("/addAdmin", async (req, res) => {
     res.status(404).json(err);
   }
 });
-
-// const formateUser = (userInfo, photoURL) => {
-//   const name = userInfo[0].name;
-//   const email = userInfo[0].email;
-//   const userType = userInfo[0].userType;
-//   const _id = userInfo[0]._id;
-
-//   const userInfoObj = { name, email, userType, _id, photoURL };
-//   return userInfoObj;
-// };
 
 module.exports = router;
