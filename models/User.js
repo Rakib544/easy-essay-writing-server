@@ -17,10 +17,6 @@ const UserSchema = new mongoose.Schema({
     type: Boolean,
     required: true,
   },
-  isAffiliateUser: {
-    type: Boolean,
-    required: true,
-  },
 });
 
 module.exports = mongoose.model("User", UserSchema);
