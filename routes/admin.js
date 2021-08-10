@@ -35,10 +35,9 @@ router.post("/", async (req, res) => {
             name,
             email,
             referredBy: referrerEmail,
-            accountCreatedAt: new Date().getDate(),
           });
           await affiliateUser.save();
-          res.send(userObj);
+          res.send({ userObj, affiliateUser });
         } else {
           const newUser = new User({
             name,
@@ -129,14 +128,14 @@ router.post("/addAdmin", async (req, res) => {
   }
 });
 
-const formateUser = (name, email, userType, id, photoURL, discountOffer) => {
+const formateUser = (name, email, userType, id, discountOffer, photoURL) => {
   const userObj = {};
   userObj.username = name;
   userObj.userEmail = email;
   userObj.userType = userType;
   userObj._id = id;
-  userObj.photoURL = photoURL;
   userObj.hasDiscountOffer = discountOffer;
+  userObj.photoURL = photoURL;
   return userObj;
 };
 

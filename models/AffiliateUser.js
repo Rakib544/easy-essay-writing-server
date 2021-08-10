@@ -15,8 +15,8 @@ const AffiliateSchema = new mongoose.Schema({
   },
   accountCreatedAt: {
     type: Date,
-    default: new Date().getDate(),
+    default: new Date(),
   },
 });
 
-module.exports = mongoose.model("AffiliateSchema", AffiliateSchema);
+module.exports = mongoose.model("AffiliateUsers", AffiliateSchema);
