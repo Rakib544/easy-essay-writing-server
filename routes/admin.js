@@ -35,6 +35,7 @@ router.post("/", async (req, res) => {
             name,
             email,
             referredBy: referrerEmail,
+            accountCreatedAt: new Date().getDate(),
           });
           await affiliateUser.save();
           res.send(userObj);
