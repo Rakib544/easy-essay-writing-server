@@ -8,14 +8,14 @@ router.post("/", async (req, res) => {
     const email = req.body.email;
     const users = await AffiliateUser.find({ referredBy: email });
     const lastSevenDaysUser = await AffiliateUser.find({
-      referrerEmail: email,
+      referredBy: email,
       accountCreatedAt: {
         $gte: new Date(new Date(lastDate).setHours(00, 00, 00)),
         $lt: new Date(new Date(startDate).setHours(23, 59, 59)),
       },
     });
     const lastOneDayUser = await AffiliateUser.find({
-      referrerEmail: email,
+      referredBy: email,
       accountCreatedAt: {
         $gte: new Date(new Date(startDate).setHours(00, 00, 00)),
         $lt: new Date(new Date(startDate).setHours(23, 59, 59)),
