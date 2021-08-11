@@ -6,7 +6,7 @@ router.post("/", async (req, res) => {
   const lastDate = new Date(new Date().getTime() - 7 * 24 * 60 * 60 * 1000);
   try {
     const email = req.body.email;
-    const users = await AffiliateUser.find({ referrerEmail: email });
+    const users = await AffiliateUser.find({ referredBy: email });
     const lastSevenDaysUser = await AffiliateUser.find({
       referrerEmail: email,
       accountCreatedAt: {

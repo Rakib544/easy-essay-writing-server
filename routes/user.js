@@ -36,7 +36,7 @@ router.post("/user", async (req, res) => {
 router.post("/affiliateUser", async (req, res) => {
   const email = req.body.email;
   const name = req.body.name;
-  const referrerBy = req.body.referrerBy;
+  const referrerBy = req.body.referrerEmail;
 
   try {
     const newUser = new User({
