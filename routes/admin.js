@@ -1,97 +1,28 @@
 const router = require("express").Router();
 const Admin = require("../models/Admin");
 const User = require("../models/User");
-const AffiliateUser = require("../models/AffiliateUser");
 
 router.post("/", async (req, res) => {
   try {
     const email = req.body.email;
-    const name = req.body.name;
     const photoURL = req.body.photoURL;
-    const referrerEmail = req.body.referrerEmail;
 
-    const isAdminList = await Admin.find({ email: email });
+    console.log(email);
 
-    if (isAdminList.length === 0) {
-      const isUser = await User.find({ email: email });
-      if (isUser.length === 0) {
-        if (referrerEmail) {
-          const newUser = new User({
-            name,
-            email,
-            userType: "user",
-            hasDiscountOffer: true,
-          });
-          const user = await newUser.save();
-          const userObj = formateUser(
-            user.name,
-            user.email,
-            user.userType,
-            user._id,
-            user.hasDiscountOffer,
-            photoURL
-          );
-          const affiliateUser = new AffiliateUser({
-            name,
-            email,
-            referredBy: referrerEmail,
-          });
-          await affiliateUser.save();
-          res.send(userObj);
-        } else {
-          const newUser = new User({
-            name,
-            email,
-            userType: "user",
-            hasDiscountOffer: false,
-          });
-          const user = await newUser.save();
-          const userObj = formateUser(
-            user.name,
-            user.email,
-            user.userType,
-            user._id,
-            user.hasDiscountOffer,
-            photoURL
-          );
-          res.send(userObj);
-        }
-      } else {
-        const userObj = {};
-        userObj.username = isUser[0].name;
-        userObj.userEmail = isUser[0].email;
-        userObj.userType = isUser[0].userType;
-        userObj._id = isUser[0]._id;
-        userObj.photoURL = photoURL;
-        userObj.hasDiscountOffer = user[0].hasDiscountOffer;
-        res.send(userObj);
-      }
+    const user = await User.find({ email: email });
+
+    if (user.length > 0) {
+      const userObj = {};
+      userObj.name = user[0].name;
+      userObj.email = user[0].email;
+      userObj._id = user[0]._id;
+      userObj.photoURL = photoURL;
+      userObj.userType = user[0].userType;
+      userObj.hasDiscountOffer = user[0].hasDiscountOffer;
+
+      res.status(200).json(userObj);
     } else {
-      const isUser = await User.find({ email: email });
-      if (isUser.length === 0) {
-        const newUser = new User({
-          name,
-          email,
-          userType: "admin",
-          hasDiscountOffer: false,
-        });
-        const user = await newUser.save();
-        const userObj = {};
-        userObj.username = user.name;
-        userObj.userEmail = user.email;
-        userObj.userType = user.userType;
-        userObj._id = user._id;
-        userObj.photoURL = photoURL;
-        res.send(userObj);
-      } else {
-        const userObj = {};
-        userObj.username = isUser[0].name;
-        userObj.userEmail = isUser[0].email;
-        userObj.userType = isUser[0].userType;
-        userObj._id = isUser[0]._id;
-        userObj.photoURL = photoURL;
-        res.send(userObj);
-      }
+      res.json("User Not Found");
     }
   } catch (err) {
     res.status(404).json(err);
@@ -101,7 +32,6 @@ router.post("/", async (req, res) => {
 //referrer url checking
 router.get("/checkURL/:id", async (req, res) => {
   const id = req.params.id;
-
   try {
     const user = await User.find({ _id: id });
 
@@ -127,16 +57,5 @@ router.post("/addAdmin", async (req, res) => {
     res.status(404).json(err);
   }
 });
-
-const formateUser = (name, email, userType, id, discountOffer, photoURL) => {
-  const userObj = {};
-  userObj.username = name;
-  userObj.userEmail = email;
-  userObj.userType = userType;
-  userObj._id = id;
-  userObj.hasDiscountOffer = discountOffer;
-  userObj.photoURL = photoURL;
-  return userObj;
-};
 
 module.exports = router;
