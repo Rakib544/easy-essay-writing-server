@@ -43,7 +43,7 @@ router.post("/affiliateUser", async (req, res) => {
       name,
       email,
       userType: "user",
-      hasDiscountOffer: false,
+      hasDiscountOffer: true,
     });
     await newUser.save();
 

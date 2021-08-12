@@ -115,4 +115,27 @@ function getPaginatedResults(model, orderStatus) {
   };
 }
 
+router.put("/upload/:id", async (req, res) => {
+  const file = req.files.file;
+  const filePath = `/${file.name}`;
+  file.mv(`${__dirname}/../uploads/${file.name}`, async (err) => {
+    if (err) {
+      return res.json(err);
+    }
+    return res.json(filePath);
+  });
+  await OrderCard.findByIdAndUpdate(
+    { _id: req.params.id },
+    {
+      $set: {
+        file: filePath,
+      },
+    },
+    {
+      useFindAndModify: false,
+    }
+  );
+  res.json("Completed");
+});
+
 module.exports = router;

@@ -1,10 +1,13 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
+const fileUpload = require("express-fileupload");
 const mongoose = require("mongoose");
 require("dotenv").config();
 app.use(express.json());
 app.use(cors());
+app.use(express.static("uploads"));
+app.use(fileUpload());
 
 //PORT
 const PORT = 8080;
