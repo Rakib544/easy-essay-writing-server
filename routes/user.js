@@ -62,4 +62,34 @@ router.post("/affiliateUser", async (req, res) => {
   }
 });
 
+router.post("/googleUser", async (req, res) => {
+  const email = req.body.email;
+  const name = req.body.name;
+
+  try {
+    const adminList = await Admin.find({ email: email });
+    if (adminList.length === 0) {
+      const newUser = new User({
+        name,
+        email,
+        userType: "user",
+        hasDiscountOffer: false,
+      });
+      await newUser.save();
+      res.status(200).json(newUser);
+    } else {
+      const newUser = new User({
+        name,
+        email,
+        userType: "admin",
+        hasDiscountOffer: false,
+      });
+      await newUser.save();
+      res.status(200).json(newUser);
+    }
+  } catch (err) {
+    res.status(404).json(err);
+  }
+});
+
 module.exports = router;
