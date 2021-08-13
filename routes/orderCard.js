@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const OrderCard = require("../models/OrderCard");
+const AffiliateEarning = require("../models/AffiliateEarning");
 
 router.post(
   "/pending",
@@ -27,10 +28,20 @@ router.post("/userOrder", async (req, res) => {
 });
 
 router.post("/post", async (req, res) => {
+  const referredBy = req.body.referredBy;
+  const email = req.body.customerEmail;
   try {
     const newPost = new OrderCard(req.body);
-    const data = await newPost.save();
-    res.status(200).json(data);
+    await newPost.save();
+    if (referredBy) {
+      const newUser = new AffiliateEarning({
+        email,
+        referredBy,
+      });
+      await newUser.save();
+    }
+
+    res.status(200).json("Order added Successful");
   } catch (err) {
     res.status(404).json(err);
   }
