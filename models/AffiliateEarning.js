@@ -10,10 +10,6 @@ const AffiliateEarning = new mongoose.Schema(
       type: String,
       required: true,
     },
-    accountCreatedAt: {
-      type: Date,
-      default: Date.now,
-    },
   },
   { timestamps: true }
 );

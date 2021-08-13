@@ -21,14 +21,18 @@ router.post("/lastSevenDays", async (req, res) => {
 
   try {
     const email = req.body.email;
-    const lastSevenDaysUser = await AffiliateEarning.find({
+    const users = await AffiliateEarning.find({
       email: email,
-      accountCreatedAt: {
+      createdAt: {
         $gte: new Date(new Date(lastDate).setHours(00, 00, 00)),
         $lt: new Date(new Date(startDate).setHours(23, 59, 59)),
       },
     });
-    res.status(200).json({ lastSevenDaysUser: lastSevenDaysUser.length });
+    const totalEarning = users.reduce(
+      (total, user) => (total += parseInt(user.earn)),
+      0
+    );
+    res.status(200).json({ lastSevenDaysEarning: totalEarning });
   } catch (err) {
     res.status(404).json(err);
   }
@@ -38,14 +42,18 @@ router.post("/lastOneDay", async (req, res) => {
   const startDate = new Date();
   try {
     const email = req.body.email;
-    const lastOneDayUser = await AffiliateEarning.find({
+    const users = await AffiliateEarning.find({
       email: email,
-      accountCreatedAt: {
+      createdAt: {
         $gte: new Date(new Date(startDate).setHours(00, 00, 00)),
         $lt: new Date(new Date(startDate).setHours(23, 59, 59)),
       },
     });
-    res.status(200).json({ lastOneDayUser: lastOneDayUser.length });
+    const totalEarning = users.reduce(
+      (total, user) => (total += parseInt(user.earn)),
+      0
+    );
+    res.status(200).json({ lastOneDayEarning: totalEarning });
   } catch (err) {
     res.status(404).json(err);
   }
