@@ -15,7 +15,7 @@ router.post("/affiliateUserFind", async (req, res) => {
   try {
     const email = req.body.email;
     const user = await AffiliateUser.find({ email: email });
-    res.status(200).json({ referredBy: user.referredBy });
+    res.status(200).json({ referredBy: user[0].referredBy });
   } catch (err) {
     res.status(404).json(err);
   }

@@ -31,7 +31,6 @@ router.post("/userOrder", async (req, res) => {
 
 router.post("/post", async (req, res) => {
   const referredBy = req.body.referredBy;
-  const email = req.body.customerEmail;
   const earn = req.body.referredUserProfit;
   try {
     const newPost = new OrderCard(req.body);
