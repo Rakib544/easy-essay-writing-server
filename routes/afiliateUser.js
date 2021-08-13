@@ -11,6 +11,16 @@ router.post("/all", async (req, res) => {
   }
 });
 
+router.post("/affiliateUserFind", async (req, res) => {
+  try {
+    const email = req.body.email;
+    const user = await AffiliateUser.find({ email: email });
+    res.status(200).json({ referredBy: user.referredBy });
+  } catch (err) {
+    res.status(404).json(err);
+  }
+});
+
 router.post("/lastSevenDays", async (req, res) => {
   const startDate = new Date();
   const lastDate = new Date(new Date().getTime() - 7 * 24 * 60 * 60 * 1000);
