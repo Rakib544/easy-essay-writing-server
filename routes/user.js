@@ -69,23 +69,35 @@ router.post("/googleUser", async (req, res) => {
   try {
     const adminList = await Admin.find({ email: email });
     if (adminList.length === 0) {
-      const newUser = new User({
-        name,
-        email,
-        userType: "user",
-        hasDiscountOffer: false,
-      });
-      await newUser.save();
-      res.status(200).json(newUser);
+      //find the user from database for checking if the user is exists or not
+      const userList = await User.find({ email: email });
+      //check if the user is already exists or not.
+      if (userList.length === 0) {
+        const newUser = new User({
+          name,
+          email,
+          userType: "user",
+          hasDiscountOffer: false,
+        });
+        await newUser.save();
+        res.status(200).json(newUser);
+      } else {
+        res.status(200).json(userList[0]);
+      }
     } else {
-      const newUser = new User({
-        name,
-        email,
-        userType: "admin",
-        hasDiscountOffer: false,
-      });
-      await newUser.save();
-      res.status(200).json(newUser);
+      const userList = await User.find({ email: email });
+      if (userList.length === 0) {
+        const newUser = new User({
+          name,
+          email,
+          userType: "admin",
+          hasDiscountOffer: false,
+        });
+        await newUser.save();
+        res.status(200).json(newUser);
+      } else {
+        res.status(200).json(userList[0]);
+      }
     }
   } catch (err) {
     res.status(404).json(err);
