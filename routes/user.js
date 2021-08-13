@@ -92,4 +92,23 @@ router.post("/googleUser", async (req, res) => {
   }
 });
 
+router.post("/update/:id", async (req, res) => {
+  try {
+    await User.findByIdAndUpdate(
+      { _id: req.params.id },
+      {
+        $set: {
+          hasDiscountOffer: false,
+        },
+      },
+      {
+        useFindAndModify: false,
+      }
+    );
+    res.status(200).json("User has been Updated Successfully");
+  } catch (err) {
+    res.status(404).json(err);
+  }
+});
+
 module.exports = router;
