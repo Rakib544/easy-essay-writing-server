@@ -24,6 +24,7 @@ const processCardRoute = require("./routes/processCard");
 const admin = require("./routes/admin");
 const affiliateUsers = require("./routes/afiliateUser");
 const user = require("./routes/user");
+const affiliateEarning = require("./routes/earnInfo");
 
 //Connecting mongoose
 mongoose
@@ -46,6 +47,7 @@ app.use("/footerIcons", footerIconRoute);
 app.use("/admin", admin);
 app.use("/affiliateUser", affiliateUsers);
 app.use("/create", user);
+app.use("/earnInfo", affiliateEarning);
 
 app.get("/", (req, res) => {
   res.send(" Bismillah Hello World!!!");
