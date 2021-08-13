@@ -65,6 +65,7 @@ router.post("/affiliateUser", async (req, res) => {
 router.post("/googleUser", async (req, res) => {
   const email = req.body.email;
   const name = req.body.name;
+  const referrerBy = req.body.referrerEmail;
 
   try {
     const adminList = await Admin.find({ email: email });
@@ -73,14 +74,33 @@ router.post("/googleUser", async (req, res) => {
       const userList = await User.find({ email: email });
       //check if the user is already exists or not.
       if (userList.length === 0) {
-        const newUser = new User({
-          name,
-          email,
-          userType: "user",
-          hasDiscountOffer: false,
-        });
-        await newUser.save();
-        res.status(200).json(newUser);
+        if (referrerBy) {
+          const newUser = new User({
+            name,
+            email,
+            userType: "user",
+            hasDiscountOffer: true,
+          });
+          await newUser.save();
+          const newAffiliateUser = new AffiliateUser({
+            name,
+            email,
+            referredBy: referrerBy,
+            accountCreatedAt: new Date(),
+          });
+
+          await newAffiliateUser.save();
+          res.status(200).json(newUser);
+        } else {
+          const newUser = new User({
+            name,
+            email,
+            userType: "user",
+            hasDiscountOffer: false,
+          });
+          await newUser.save();
+          res.status(200).json(newUser);
+        }
       } else {
         res.status(200).json(userList[0]);
       }
