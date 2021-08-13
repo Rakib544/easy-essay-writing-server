@@ -104,6 +104,7 @@ function getPaginatedResults(model, orderStatus) {
       results.totalData = total.length;
       results.result = await model
         .find({ orderStatus: orderStatus })
+        .sort({ orderDate: -1 })
         .limit(limit)
         .skip(startIndex)
         .exec();
