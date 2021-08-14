@@ -25,6 +25,7 @@ const admin = require("./routes/admin");
 const affiliateUsers = require("./routes/afiliateUser");
 const user = require("./routes/user");
 const affiliateEarning = require("./routes/earnInfo");
+const discountPercentage = require("./routes/discountPrice");
 
 //Connecting mongoose
 mongoose
@@ -48,6 +49,7 @@ app.use("/admin", admin);
 app.use("/affiliateUser", affiliateUsers);
 app.use("/create", user);
 app.use("/earnInfo", affiliateEarning);
+app.use("/discount", discountPercentage);
 
 app.get("/", (req, res) => {
   res.send(" Bismillah Hello World!!!");
