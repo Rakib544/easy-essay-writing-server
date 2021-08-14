@@ -136,20 +136,32 @@ router.put("/upload/:id", async (req, res) => {
     if (err) {
       return res.json(err);
     }
+    await OrderCard.findByIdAndUpdate(
+      { _id: req.params.id },
+      {
+        $set: {
+          file: filePath,
+        },
+      },
+      {
+        useFindAndModify: false,
+      }
+    );
+    // res.json("Completed");
     return res.json(filePath);
   });
-  await OrderCard.findByIdAndUpdate(
-    { _id: req.params.id },
-    {
-      $set: {
-        file: filePath,
-      },
-    },
-    {
-      useFindAndModify: false,
-    }
-  );
-  res.json("Completed");
+  // await OrderCard.findByIdAndUpdate(
+  //   { _id: req.params.id },
+  //   {
+  //     $set: {
+  //       file: filePath,
+  //     },
+  //   },
+  //   {
+  //     useFindAndModify: false,
+  //   }
+  // );
+  // res.json("Completed");
 });
 
 module.exports = router;
