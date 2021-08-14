@@ -57,4 +57,13 @@ router.post("/lastOneDay", async (req, res) => {
   }
 });
 
+router.get("/allAffiliateUsers", async (req, res) => {
+  try {
+    const allAffiliateUsers = await AffiliateUser.find({});
+    res.status(200).json(allAffiliateUsers);
+  } catch (err) {
+    res.status(404).json(err);
+  }
+});
+
 module.exports = router;

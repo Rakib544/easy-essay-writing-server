@@ -17,6 +17,10 @@ const UserSchema = new mongoose.Schema({
     type: Boolean,
     required: true,
   },
+  totalBalance: {
+    type: String,
+    default: "0",
+  },
 });
 
 module.exports = mongoose.model("User", UserSchema);
