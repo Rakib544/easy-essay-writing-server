@@ -14,8 +14,8 @@ const UserSchema = new mongoose.Schema({
     required: true,
   },
   balance: {
-    type: Number,
-    default: 0,
+    type: String,
+    default: "0",
   },
   hasDiscountOffer: {
     type: Boolean,

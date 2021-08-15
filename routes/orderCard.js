@@ -31,9 +31,10 @@ router.post("/userOrder", async (req, res) => {
 });
 
 //working on this section
-router.post("/post", async (req, res) => {
+router.put("/post", async (req, res) => {
   const referredBy = req.body.referredBy;
   const earn = req.body.referredUserProfit;
+
   try {
     const newPost = new OrderCard(req.body);
     await newPost.save();
@@ -46,11 +47,12 @@ router.post("/post", async (req, res) => {
       const user = await User.find({ email: referredBy });
       const userBalance = parseInt(user[0].balance);
       const newBalance = userBalance + parseInt(earn);
+      const strBalance = `${newBalance}`;
       await User.findByIdAndUpdate(
-        { email: referredBy },
+        { _id: user[0]._id },
         {
           $set: {
-            balance: newBalance,
+            balance: strBalance,
           },
         },
         {
