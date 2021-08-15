@@ -13,13 +13,13 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  balance: {
+    type: Number,
+    default: 0,
+  },
   hasDiscountOffer: {
     type: Boolean,
     required: true,
-  },
-  totalBalance: {
-    type: String,
-    default: "0",
   },
 });
 

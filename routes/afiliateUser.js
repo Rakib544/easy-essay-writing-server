@@ -108,4 +108,34 @@ function getPaginatedResults(model) {
   };
 }
 
+router.put("/updateBalance", async (req, res) => {
+  try {
+    const balance = req.body.balance;
+    const email = req.body.email;
+    await AffiliateUser.findByIdAndUpdate(
+      { referredBy: email },
+      {
+        $set: {
+          balance: balance,
+        },
+      },
+      {
+        useFindAndModify: false,
+      }
+    );
+    res.status(200).json("Total Amount Updated Successfully");
+  } catch (err) {
+    res.status(404).json(err);
+  }
+});
+
+router.get("/getTotalBalance/:email", async (req, res) => {
+  try {
+    const user = await AffiliateUser.find({ referredBy: req.params.email });
+    const balance = user[0].balance;
+    res.status(200).json(balance);
+  } catch (err) {
+    res.status(404).json(err);
+  }
+});
 module.exports = router;

@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const OrderCard = require("../models/OrderCard");
 const AffiliateEarning = require("../models/AffiliateEarning");
+const User = require("../models/User");
 
 router.post(
   "/pending",
@@ -29,6 +30,7 @@ router.post("/userOrder", async (req, res) => {
   }
 });
 
+//working on this section
 router.post("/post", async (req, res) => {
   const referredBy = req.body.referredBy;
   const earn = req.body.referredUserProfit;
@@ -41,6 +43,20 @@ router.post("/post", async (req, res) => {
         earn,
       });
       await newUser.save();
+      const user = await User.find({ email: referredBy });
+      const userBalance = parseInt(user[0].balance);
+      const newBalance = userBalance + parseInt(earn);
+      await User.findByIdAndUpdate(
+        { email: referredBy },
+        {
+          $set: {
+            balance: newBalance,
+          },
+        },
+        {
+          useFindAndModify: false,
+        }
+      );
     }
 
     res.status(200).json("Order added Successful");
