@@ -62,10 +62,10 @@ router.put("/post", async (req, res) => {
       );
     }
 
-    if (userBalance) {
+    if (cutBalance) {
       const user = await User.find({ email: req.body.customerEmail });
-      const userBalance = parseInt(user[0].balance);
-      const newBalance = userBalance - parseInt(cutBalance);
+      const userBalance = parseFloat(user[0].balance);
+      const newBalance = userBalance - parseFloat(cutBalance);
       const strBalance = `${newBalance}`;
       await User.findByIdAndUpdate(
         { _id: user[0]._id },
