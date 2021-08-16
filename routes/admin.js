@@ -5,22 +5,22 @@ const User = require("../models/User");
 router.post("/", async (req, res) => {
   try {
     const email = req.body.email;
-    const photoURL = req.body.photoURL;
+    // const photoURL = req.body.photoURL;
 
     console.log(email);
 
     const user = await User.find({ email: email });
 
     if (user.length > 0) {
-      const userObj = {};
-      userObj.name = user[0].name;
-      userObj.email = user[0].email;
-      userObj._id = user[0]._id;
-      userObj.photoURL = photoURL;
-      userObj.userType = user[0].userType;
-      userObj.hasDiscountOffer = user[0].hasDiscountOffer;
+      // const userObj = {};
+      // userObj.name = user[0].name;
+      // userObj.email = user[0].email;
+      // userObj._id = user[0]._id;
+      // userObj.photoURL = photoURL;
+      // userObj.userType = user[0].userType;
+      // userObj.hasDiscountOffer = user[0].hasDiscountOffer;
 
-      res.status(200).json(userObj);
+      res.status(200).json(user[0]);
     } else {
       res.json("User Not Found");
     }
