@@ -34,6 +34,7 @@ router.post("/userOrder", async (req, res) => {
 router.put("/post", async (req, res) => {
   const referredBy = req.body.referredBy;
   const earn = req.body.referredUserProfit;
+  const cutBalance = req.body.userBalance;
 
   try {
     const newPost = new OrderCard(req.body);
@@ -47,6 +48,24 @@ router.put("/post", async (req, res) => {
       const user = await User.find({ email: referredBy });
       const userBalance = parseInt(user[0].balance);
       const newBalance = userBalance + parseInt(earn);
+      const strBalance = `${newBalance}`;
+      await User.findByIdAndUpdate(
+        { _id: user[0]._id },
+        {
+          $set: {
+            balance: strBalance,
+          },
+        },
+        {
+          useFindAndModify: false,
+        }
+      );
+    }
+
+    if (userBalance) {
+      const user = await User.find({ email: req.body.customerEmail });
+      const userBalance = parseInt(user[0].balance);
+      const newBalance = userBalance - parseInt(cutBalance);
       const strBalance = `${newBalance}`;
       await User.findByIdAndUpdate(
         { _id: user[0]._id },
