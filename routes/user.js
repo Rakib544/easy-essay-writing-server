@@ -126,25 +126,89 @@ router.post("/googleUser", async (req, res) => {
 
 router.post("/update/:id", async (req, res) => {
   try {
+    const promoCode = req.body.promoCode;
+    if (promoCode) {
+      const user = await User.find({ _id: req.params.id });
+      const usedPromoCode = user[0].usedPromoCode;
+      await User.findByIdAndUpdate(
+        { _id: req.params.id },
+        {
+          $set: {
+            hasDiscountOffer: false,
+            usedPromoCode: [...usedPromoCode, promoCode],
+          },
+        },
+        {
+          useFindAndModify: false,
+        }
+      );
+      res.status(200).json("User has been Updated Successfully");
+    } else {
+      await User.findByIdAndUpdate(
+        { _id: req.params.id },
+        {
+          $set: {
+            hasDiscountOffer: false,
+          },
+        },
+        {
+          useFindAndModify: false,
+        }
+      );
+      res.status(200).json("User has been Updated Successfully");
+    }
+  } catch (err) {
+    res.status(404).json(err);
+  }
+});
+
+router.put("/update/promoCode", async (req, res) => {
+  try {
     await User.findByIdAndUpdate(
-      { _id: req.params.id },
+      {
+        _id: req.body._id,
+      },
       {
         $set: {
-          hasDiscountOffer: false,
+          promoCode: req.body.promoCode,
         },
       },
       {
         useFindAndModify: false,
       }
     );
-    res.status(200).json("User has been Updated Successfully");
+    res.status(200).json("Promo code added");
+  } catch (err) {
+    res.status(404).json(err);
+  }
+});
+
+//promo code check functionality goes here
+router.post("/checkPromoCode", async (req, res) => {
+  try {
+    const promoCode = req.body.promoCode;
+
+    const ownUser = await User.find({ email: req.body.email });
+    const checkPromoCode = ownUser[0].usedPromoCode.find(
+      (code) => code === promoCode
+    );
+    if (!checkPromoCode) {
+      const user = await User.find({ promoCode: promoCode });
+      if (user.length > 0) {
+        res.status(200).json(user);
+      } else {
+        res.json("Wrong Promo Code");
+      }
+    } else {
+      res.json("Already Used this promo Code");
+    }
   } catch (err) {
     res.status(404).json(err);
   }
 });
 
 //get all paginated users
-router.get("/", getPaginatedResults(User), async (req, res) => {
+router.post("/", getPaginatedResults(User), async (req, res) => {
   res.status(200).json(res.paginatedResults);
 });
 
