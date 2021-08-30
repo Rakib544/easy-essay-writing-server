@@ -267,6 +267,9 @@ router.put("/accessURL", async (req, res) => {
           $set: {
             showReeferLink: false,
           },
+        },
+        {
+          useFindAndModify: false,
         }
       );
       res.status(200).json("Updated Successfully");
@@ -277,10 +280,42 @@ router.put("/accessURL", async (req, res) => {
           $set: {
             showReeferLink: true,
           },
+        },
+        {
+          useFindAndModify: false,
         }
       );
       res.status(200).json("Updated Successfully");
     }
+  } catch (err) {
+    res.status(404).json(err);
+  }
+});
+
+//update user current balance
+router.put("/update/userBalance", async (req, res) => {
+  try {
+    await User.findByIdAndUpdate(
+      { _id: req.body._id },
+      {
+        $set: {
+          balance: req.body.balance,
+        },
+      },
+      {
+        useFindAndModify: false,
+      }
+    );
+    res.status(200).json("updated Successfully");
+  } catch (err) {
+    res.status(404).json(err);
+  }
+});
+
+router.post("/getCurrentUser", async (req, res) => {
+  try {
+    const userInfo = await User.find({ _id: req.body._id });
+    res.status(200).json(userInfo);
   } catch (err) {
     res.status(404).json(err);
   }
