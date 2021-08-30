@@ -255,4 +255,35 @@ function getPaginatedResults(model) {
   };
 }
 
+//delete promo code
+
+router.put("/accessURL", async (req, res) => {
+  const isTrue = req.body.deleteURL;
+  try {
+    if (isTrue) {
+      await User.findByIdAndUpdate(
+        { _id: req.body._id },
+        {
+          $set: {
+            showReeferLink: false,
+          },
+        }
+      );
+      res.status(200).json("Updated Successfully");
+    } else {
+      await User.findByIdAndUpdate(
+        { _id: req.body._id },
+        {
+          $set: {
+            showReeferLink: true,
+          },
+        }
+      );
+      res.status(200).json("Updated Successfully");
+    }
+  } catch (err) {
+    res.status(404).json(err);
+  }
+});
+
 module.exports = router;
