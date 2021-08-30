@@ -164,27 +164,26 @@ router.post("/update/:id", async (req, res) => {
 
 router.put("/update/promoCode", async (req, res) => {
   try {
-    // const promoCodeUser = await User.find({ promoCode: req.body.promoCode });
-    // console.log(promoCodeUser);
+    const promoCodeUser = await User.find({ promoCode: req.body.promoCode });
 
-    // if (promoCodeUser[0].email) {
-    //   res.json("ALready Used This Promo Code");
-    // } else {
-    await User.findByIdAndUpdate(
-      {
-        _id: req.body._id,
-      },
-      {
-        $set: {
-          promoCode: req.body.promoCode,
+    if (promoCodeUser.length > 0) {
+      res.json("ALready Used This Promo Code");
+    } else {
+      await User.findByIdAndUpdate(
+        {
+          _id: req.body._id,
         },
-      },
-      {
-        useFindAndModify: false,
-      }
-    );
-    res.status(200).json("Promo code added");
-    // }
+        {
+          $set: {
+            promoCode: req.body.promoCode,
+          },
+        },
+        {
+          useFindAndModify: false,
+        }
+      );
+      res.status(200).json("Promo code added");
+    }
   } catch (err) {
     res.status(404).json(err);
   }
