@@ -22,11 +22,11 @@ const OrderCardSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    customerEmail: {
-      type: String,
+    orderAmount: {
+      type: Number,
       required: true,
     },
-    orderAmount: {
+    customerEmail: {
       type: String,
       required: true,
     },
@@ -34,7 +34,15 @@ const OrderCardSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    quantity: {
+    numberOfPages: {
+      type: String,
+      required: true,
+    },
+    topicName: {
+      type: String,
+      required: true,
+    },
+    description: {
       type: String,
       required: true,
     },
