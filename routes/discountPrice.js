@@ -23,23 +23,24 @@ router.put("/updateDiscount/:id", async (req, res) => {
         useFindAndModify: false,
       }
     );
+    
     res.status(200).json(updatedValue);
   } catch (err) {
     res.status(404).json(err);
   }
 });
 
-// router.post("/add", async (req, res) => {
-//   const discountPercentage = req.body.discountPercentage;
-//   try {
-//     const newDiscount = new DisCountPercentage({
-//       discountPercentage,
-//     });
-//     await newDiscount.save();
-//     res.status(200).json("created");
-//   } catch (err) {
-//     res.status(404).json(err);
-//   }
-// });
+router.post("/add", async (req, res) => {
+  const discountPercentage = req.body.discountPercentage;
+  try {
+    const newDiscount = new DisCountPercentage({
+      discountPercentage,
+    });
+    await newDiscount.save();
+    res.status(200).json("created");
+  } catch (err) {
+    res.status(404).json(err);
+  }
+});
 
 module.exports = router;
